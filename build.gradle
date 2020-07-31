@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'org.beryx.jlink' version '2.21.1'
+    id 'org.openjfx.javafxplugin' version '0.0.5'
+}
+
+group 'com.github.yqy7'
+version '1.0-SNAPSHOT'
+
+repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+//tasks.withType(JavaCompile).each {
+//    it.options.compilerArgs.add('--enable-preview')
+//}
+
+mainClassName="com.github.yqy7.jpackagedemo.Main"
+
+sourceSets { // gradle运行时会找不到fxml，需要加这个
+    main.output.resourcesDir = main.java.outputDir
+}
+
+javafx {
+    version = "14"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher{
+        name = 'hello'
+    }
+}
